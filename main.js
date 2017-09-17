@@ -1,27 +1,97 @@
-var index = 0
+window.gameIndex = 0
+window.answerArray = []
+window.topRowNumbers
+window.bottomRowNumbers
 
 
-function nextEquation() {
+window.addEventListener('load', function() {
+  initialize();
+})
+
+
+function initialize() {
+    topRowNumbers = createRowNumbers()
+    bottomRowNumbers = createRowNumbers()
     
-    var topNumber = topRowNumbers()[index]
+    newEquation();
+    
+    setTimeout(finish, 5000);
+}
+
+function finish() {
+    
+    alert("time up")
+    correctAnswers();
+    // console.log(correctAnswers());
+    // console.log(incorrectAnswers());
+}
+
+function correctAnswers() {
+    var length = answerArray.length     
+
+    
+    for (i = 0; i < length; i++) { 
+        var answer = answerArray[i]
+        var firstNumber = topRowNumbers[i]    
+        var secondNumber = bottomRowNumbers[i]    
+        var correctAnswer = firstNumber * secondNumber
+        var test = (answer === correctAnswer)
+        console.log(test)
+    }
+
+}
+
+
+function incorrectAnswers() {
+    
+}
+
+
+function createRowNumbers(){
+    var array = []
+    
+    for (i = 0; i < 100; i++) { 
+        array.push(randomInteger())
+    }
+
+    return array
+}
+
+function randomInteger() {
+    return Math.floor(Math.random() * 11);
+}
+
+
+function submitAnswer() {
+    logAnswer();
+    newEquation();
+}
+
+function logAnswer(){
+    var input = document.getElementById("answer")
+    var answer = input.value
+    var integer = parseInt(answer)
+    
+    answerArray.push(integer)
+    
+    input.value = ""
+    
+    console.log(answerArray)
+}
+
+function newEquation() {
+    
+    var topNumber = topRowNumbers[gameIndex]
     
     var element = document.getElementById("top")
     
     element.innerHTML = topNumber
     
-    var bottomNumber = bottomRowNumbers()[index]
-    
+    var bottomNumber = bottomRowNumbers[gameIndex]
+
     var anotherElement = document.getElementById("bottom")
     
-    anotherElement.innerHTML = bottomNumber
+    anotherElement.innerHTML = bottomNumber;
     
-    index = index + 1
-}
-
-function topRowNumbers() {
-   return [2,3,4,5,6,7,8,9];
-}
-
-function bottomRowNumbers() {
-   return [6,7,5,4,8,1,9,2];
+    gameIndex = gameIndex + 1
 }
