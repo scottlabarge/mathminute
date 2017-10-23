@@ -2,6 +2,8 @@ window.gameIndex = 0
 window.answerArray = []
 window.topRowNumbers
 window.bottomRowNumbers
+window.booleanArray = [];
+window.equationArray = [];
 
 
 window.addEventListener('load', function() {
@@ -15,15 +17,50 @@ function initialize() {
     
     newEquation();
     
-    setTimeout(finish, 5000);
+    setTimeout(finish, 20000);
 }
 
 function finish() {
-    
-    alert("time up")
     correctAnswers();
+    
+    var trues = trueCount(booleanArray);
+    var falses = falseCount(booleanArray);
+    
+    var string = "Number Correct: " + trues.toString() + ".  Number Incorrect: " + falses.toString()
+    
+    alert("time up");
+    alert(string);
+    alert(equationArray);
     // console.log(correctAnswers());
     // console.log(incorrectAnswers());
+}
+
+function trueCount(array) {
+    var trueCount = 0
+    
+    for (i = 0; i < array.length; i++ ) {
+        var statement = array[i]           
+    
+        if ( statement === true ) {
+            trueCount++
+        }
+    }
+    
+    return trueCount
+}
+
+function falseCount(array) {
+    var falseCount = 0
+    
+    for (i = 0; i < array.length; i++ ) {
+        var statement = array[i]           
+    
+        if ( statement === false ) {
+            falseCount++
+        }
+    }
+    
+    return falseCount
 }
 
 function correctAnswers() {
@@ -35,12 +72,13 @@ function correctAnswers() {
         var firstNumber = topRowNumbers[i]    
         var secondNumber = bottomRowNumbers[i]    
         var correctAnswer = firstNumber * secondNumber
-        var test = (answer === correctAnswer)
-        console.log(test)
+        var boolean = (answer === correctAnswer)
+        booleanArray.push(boolean)
+        var equation = firstNumber.toString() + " x " + secondNumber.toString() + " = " + correctAnswer.toString() 
+        equationArray.push(equation)
     }
 
 }
-
 
 function incorrectAnswers() {
     
@@ -63,11 +101,11 @@ function randomInteger() {
 
 
 function submitAnswer() {
-    logAnswer();
+    processAnswer();
     newEquation();
 }
 
-function logAnswer(){
+function processAnswer(){
     var input = document.getElementById("answer")
     var answer = input.value
     var integer = parseInt(answer)
@@ -76,7 +114,7 @@ function logAnswer(){
     
     input.value = ""
     
-    console.log(answerArray)
+    // console.log(answerArray)
 }
 
 function newEquation() {
